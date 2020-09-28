@@ -1,0 +1,56 @@
+
+<div id="appContainer">
+
+    <p-table>
+      <ng-template pTemplate="header">
+          <tr>
+              <th>Размер</th>
+              <th *ngFor="let size of this.data.header">{{ size }}</th>
+          </tr>
+          <tr id="inpVal">
+            <th>Вес нетто</th>
+            <th *ngFor="let val of this.data.header; let i = index" >
+              <p-inputNumber pTooltip="Введенное значение должно быть больше предыдущего"
+                             tooltipPosition="top"
+                             tooltipStyleClass="tooltip"
+                             [tooltipDisabled]="toolEnable[i]"
+                             (onInput)="checkVal()"
+                             [disabled] = "editItem"
+                             [(ngModel)]="this.testArr[i]"
+                              >
+              </p-inputNumber>
+              <button class="pi pi-times"
+                        (click)="deleteVal(i)"
+                        [hidden]="editItem">
+              </button>
+            </th>
+          </tr>
+      </ng-template>
+    </p-table>
+
+    <div *ngIf="editItem;else Db">
+      <p-button (click)="editMode()"
+                label="Редактирование">
+      </p-button>
+    </div>
+
+    <ng-template  #Db>
+      <app-dialog></app-dialog>
+      <p-button (click)="saveVal()"
+                label="Сохранить">
+      </p-button>
+    </ng-template>
+
+  </div>
+
+  <div *ngFor="let val of this.data.netWeightValues">
+    <h1>Нормальный</h1>
+    <input type="reset" [value]="val" >
+  </div>
+  <br>
+  <h1>Тестовый</h1>
+
+  <div *ngFor="let val of this.testArr">
+    <input type="text" [value]="val" pButton>
+  </div>
+
