@@ -1,23 +1,30 @@
 import { NetWeightData } from '../data.model';
-// import { resolve } from 'dns';
-import { bindCallback, Observable } from 'rxjs';
 
 
 
 export class DataService {
 
-private data: NetWeightData = {
-  netItemId: 1,
-  header: ['40', '41', '42', '43', '44', '45', '46'],
-  netWeightValues: []
-};
+  private data: NetWeightData = {
+    netItemId: 1,
+    header: ['40', '41', '42', '43', '44', '45'],
+    netWeightValues: [null, null, null, null, null, null]
+  };
 
-public getData(): Promise<NetWeightData> {
-  return new Promise(resolve => {
-    setTimeout(() => {
-        resolve(this.data);
-      }, 500);
-    }
-  );
-}
+  private getDataRequest(): Promise<NetWeightData> {
+    return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(this.data);
+        }, 500);
+      }
+    );
+  }
+
+  public getData(): Promise<NetWeightData> {
+    return this.getDataRequest();
+  }
+
+  public setData(data: NetWeightData): Promise<NetWeightData> {
+    this.data = data;
+    return this.getDataRequest();
+  }
 }

@@ -1,4 +1,14 @@
 #appContainer {
-  max-width: 90%;
-  margin: auto;
+  margin: 100px auto;
+}
+
+#sizes, #values {
+text-align: center
+}
+
+.btn {
+}
+
+p-inputNumber.ng-invalid {
+  border: red solid 10px;
 }

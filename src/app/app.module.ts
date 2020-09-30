@@ -21,34 +21,29 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DialogComponent} from './dialog/dialog.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TooltipModule} from 'primeng/tooltip';
+import {InputTextModule} from 'primeng/inputtext';
 
-
-
-
-
-
-
-// import {MenuItem} from 'primeng/api';
 
 @NgModule({
   declarations: [
     AppComponent,
     DialogComponent,
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        InputNumberModule,
-        ButtonModule,
-        // TableModule,
-        // CdkVirtualScrollViewport,
-        ConfirmDialogModule,
-        AccordionModule,
-        FormsModule,
-        TableModule,
-        TooltipModule,
-        ReactiveFormsModule,
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    InputNumberModule,
+    ButtonModule,
+    // TableModule,
+    // CdkVirtualScrollViewport,
+    ConfirmDialogModule,
+    AccordionModule,
+    TableModule,
+    TooltipModule,
+    ReactiveFormsModule,
+    FormsModule,
+    InputTextModule,
+  ],
   providers: [DataService, NetWeightService, ConfirmationService],
   bootstrap: [AppComponent]
 })
