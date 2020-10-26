@@ -1,94 +1,67 @@
 // import { resolve } from 'dns';
 import {NetWeightService} from './services/net-weight.service';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {NetWeightData} from './data.model';
-import {PrimeNGConfig} from 'primeng/api';
-import {ConfirmationService} from 'primeng/api';
-import {TooltipModule} from 'primeng/tooltip';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 
 
 export class AppComponent implements OnInit {
 
   public editItem = true;
-
   public toolEnable: boolean[] = [true, true, true, true, true, true, true];
-
   public toolInvalid: boolean[] = [false, false, false, false, false, false, false];
-
   public data: NetWeightData = null;
-
+  public firstData: NetWeightData = null;
+  values: { val: number }[] = null;
+  firstValues: {  val: number }[] = null;
   public saveBtn = false;
 
-
   constructor(private netWeightService: NetWeightService) {}
-
 
   editMode(): void {
     this.editItem = !this.editItem;
   }
-
   saveVal(): void {
         for ( let i = 0; i < this.data.netWeightValues.length; i++) {
-          this.data.netWeightValues.splice(i, 1, this.data.netWeightValues[i]);
-          if (this.data.netWeightValues[i] !== null) {
-            console.log('Размер' + ' ' + this.data.header[i] + ' ' + 'вес' + ' ' + this.data.netWeightValues[i]);
+          this.data.netWeightValues.splice(i, 1, this.values[i].val);
+          if (this.values[i].val !== this.firstValues[i].val) {
+            console.log('Размер' + ' ' + this.data.header[i] + ' ' + 'введенный вес' + ' ' + this.data.netWeightValues[i]);
+            console.log(this.data.netWeightValues);
           }
         }
-        this.netWeightService.saveData(this.data);
-        console.log(this.data.netWeightValues);
-
+        this.netWeightService.saveData(this.data).then();
   }
-
-
-  checkVal(i): any {
-
-    if (this.data.netWeightValues[i] < this.data.netWeightValues[i - 1]) {
-        this.toolEnable.splice(i, 1, false);
-        this.toolEnable.splice(i - 1, 1, false);
-        this.toolInvalid.splice(i, 1, true);
-        this.toolInvalid.splice(i - 1, 1, true);
-        this.saveBtn = true;
-      } else {
-        this.toolEnable.splice(i - 1, 1, true);
-        this.toolEnable.splice(i - 1, 1, true);
-        this.toolInvalid.splice(i, 1, false);
-        this.toolInvalid.splice(i - 1, 1, false);
-        this.saveBtn = false;
-      }
-    // const a = this.data.netWeightValues.slice();
-    const a = [null, null, null, null, null, null];
-    const b = Array.from(this.data.netWeightValues);
-
-    console.log(a + 'AAAAAAA');
-    console.log(b + 'BBBBBB');
-
-    console.log(this.data.netWeightValues + '11111');
-    console.log(this.saveBtn);
-
-
-    if (JSON.stringify(this.data.netWeightValues) === JSON.stringify(b)) {
+  deleteVal(i): void {
+    this.values[i].val = null;
+  }
+  checkVal(val: number, i): void {
+    this.values[i].val = val;
+    if ((this.values[i - 1] && this.values[i]) && (this.values[i - 1].val >= this.values[i].val)) {
+      this.toolEnable.splice(i, 1, false);
+      this.toolEnable.splice(i - 1, 1, false);
+      this.toolInvalid.splice(i, 1, true);
+      this.toolInvalid.splice(i - 1, 1, true);
       this.saveBtn = true;
     } else {
       this.saveBtn = false;
     }
   }
-
-  deleteVal(index): void {
-    this.data.netWeightValues[index] = null;
-  }
-
-
   ngOnInit(): void {
     this.netWeightService.data.subscribe(data => {
-      this.data = data;
+      if (data) {
+        this.data = data;
+        this.firstData = Object.assign({}, data);
+        this.values = this.data.netWeightValues.map(item => ({ val: item }));
+        this.firstValues = this.firstData.netWeightValues.map(item => ({ val: item }));
+      }
     });
-    this.netWeightService.getData();
+    this.netWeightService.getData().then();
   }
 }

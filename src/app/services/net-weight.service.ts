@@ -14,7 +14,6 @@ export class NetWeightService {
     return this.data$.asObservable();
   }
 
-
   constructor(private dataService: DataService) {
   }
 

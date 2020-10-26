@@ -1,7 +1,7 @@
 
 <div id="appContainer">
   <div id="appTable">
-    <p-table>
+    <p-table *ngIf="this.data">
       <ng-template pTemplate="header">
         <tr id="sizes">
           <td>Размер</td>
@@ -9,33 +9,26 @@
         </tr>
         <tr id="values">
           <td>Вес нетто</td>
-          <td *ngFor="let val of this.data.netWeightValues;
+          <td *ngFor="let val of values;
               let i = index" id="head"
           >
-<!--            <p-inputNumber pTooltip="Вес каждого последующего размера должен быть больше предыдущего!"-->
-<!--                           tooltipPosition="top"-->
-<!--                           [tooltipDisabled]="toolEnable[i]"-->
-<!--                           [disabled] = "editItem"-->
-<!--                           [(ngModel)]="this.data.netWeightValues[i]"-->
-<!--                           (onInput)="checkVal(i)"-->
-<!--                           [class.ng-invalid]="toolInvalid[i]"-->
-
-<!--            >-->
-<!--            </p-inputNumber>-->
-            <input type="number"
-                    class="btn"
-                    [(ngModel)]="this.data.netWeightValues[i]"
-                    [pTooltip]=""
-                    [tooltipDisabled]="toolEnable[i]"
-                    [disabled]="editItem"
-                    [class.ng-invalid]="toolInvalid[i]"
-            >
-
-            <button class="pi pi-times"
-                    (click)="deleteVal(i)"
-                    [hidden]="editItem"
-            >
-            </button>
+            <div class="p-inputgroup">
+              <p-inputNumber pTooltip="Вес каждого последующего размера должен быть больше предыдущего!"
+                             tooltipPosition="top"
+                             styleClass="input-number"
+                             [tooltipDisabled]="toolEnable[i]"
+                             [disabled] = "editItem"
+                             [(ngModel)]="val.val"
+                             (onInput)="checkVal($event.value, i)"
+                             [class.ng-invalid]="toolInvalid[i]"
+              >
+              </p-inputNumber>
+              <button (click)="deleteVal(i)"
+                      [hidden]="editItem"
+                      pButton icon="pi pi-times"
+              >
+              </button>
+            </div>
           </td>
         </tr>
       </ng-template>

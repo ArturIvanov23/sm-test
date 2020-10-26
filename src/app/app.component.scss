@@ -12,3 +12,13 @@ text-align: center
 p-inputNumber.ng-invalid {
   border: red solid 10px;
 }
+
+.p-inputgroup {
+  padding: 0 5px;
+}
+
+.input-number {
+  > input {
+    max-width: inherit;
+  }
+}
